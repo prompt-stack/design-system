@@ -1,0 +1,350 @@
+{
+  "fullStackGrammar": {
+    "layers": {
+      "frontend": {
+        "components": {
+          "location": "src/components/**/*.tsx",
+          "pattern": "PascalCase",
+          "exports": "default function {Name}",
+          "verbs": ["render", "display", "show", "toggle"]
+        },
+        "pages": {
+          "location": "src/pages/**/*.tsx",
+          "pattern": "PascalCase + Page",
+          "exports": "default function {Name}Page",
+          "verbs": ["render", "load", "fetch"]
+        },
+        "hooks": {
+          "location": "src/hooks/**/*.ts",
+          "pattern": "camelCase use{Feature}",
+          "exports": "named function use{Feature}",
+          "verbs": ["use", "set", "clear", "reset"]
+        },
+        "styles": {
+          "location": "src/styles/**/*.css",
+          "pattern": "kebab-case",
+          "cssPattern": "BEM: block__element--modifier"
+        }
+      },
+      
+      "backend": {
+        "routes": {
+          "location": "server/routes/**/*.ts",
+          "pattern": "kebab-case plural",
+          "httpVerbs": ["GET", "POST", "PUT", "DELETE"],
+          "functions": ["get{Resource}", "create{Resource}", "update{Resource}", "delete{Resource}"]
+        },
+        "controllers": {
+          "location": "server/controllers/**/*.ts",
+          "pattern": "PascalCase + Controller",
+          "exports": "class {Resource}Controller",
+          "methods": ["index", "show", "create", "update", "destroy"]
+        },
+        "services": {
+          "location": "server/services/**/*.ts",
+          "pattern": "PascalCase + Service",
+          "exports": "class {Domain}Service",
+          "verbs": ["fetch", "create", "update", "delete", "process", "validate"]
+        },
+        "middleware": {
+          "location": "server/middleware/**/*.ts",
+          "pattern": "camelCase + Middleware",
+          "exports": "function {purpose}Middleware",
+          "verbs": ["validate", "authenticate", "authorize", "log", "handle"]
+        }
+      },
+      
+      "database": {
+        "migrations": {
+          "location": "database/migrations/**/*.sql",
+          "pattern": "{timestamp}_{action}_{target}.sql",
+          "actions": ["create", "alter", "drop", "add", "remove"],
+          "example": "20240121_create_users_table.sql"
+        },
+        "models": {
+          "location": "server/models/**/*.ts",
+          "pattern": "PascalCase singular",
+          "exports": "class {Entity} or {Entity}Schema",
+          "properties": "camelCase",
+          "relations": {
+            "hasOne": "singular",
+            "hasMany": "plural",
+            "belongsTo": "singular",
+            "belongsToMany": "plural"
+          }
+        },
+        "repositories": {
+          "location": "server/repositories/**/*.ts",
+          "pattern": "PascalCase + Repository",
+          "exports": "class {Entity}Repository",
+          "methods": ["findById", "findAll", "create", "update", "delete", "findBy{Field}"]
+        },
+        "queries": {
+          "location": "database/queries/**/*.sql",
+          "pattern": "{action}_{entity}.sql",
+          "actions": ["get", "list", "count", "aggregate"],
+          "example": "get_active_users.sql"
+        },
+        "seeds": {
+          "location": "database/seeds/**/*.sql",
+          "pattern": "{order}_{description}.sql",
+          "example": "01_initial_users.sql"
+        }
+      },
+      
+      "infrastructure": {
+        "docker": {
+          "location": "Dockerfile, docker-compose.yml",
+          "pattern": "lowercase",
+          "naming": {
+            "services": "kebab-case",
+            "images": "kebab-case:tag",
+            "volumes": "snake_case"
+          }
+        },
+        "cicd": {
+          "location": ".github/workflows/**/*.yml",
+          "pattern": "{action}-{environment}.yml",
+          "example": "deploy-production.yml",
+          "jobs": "kebab-case",
+          "steps": "sentence case"
+        },
+        "terraform": {
+          "location": "infrastructure/**/*.tf",
+          "pattern": "{resource}.tf",
+          "resources": "snake_case",
+          "variables": "snake_case"
+        },
+        "kubernetes": {
+          "location": "k8s/**/*.yaml",
+          "pattern": "{resource}-{type}.yaml",
+          "example": "api-deployment.yaml",
+          "labels": "kebab-case"
+        }
+      },
+      
+      "testing": {
+        "unit": {
+          "location": "**/*.test.{ts,tsx}",
+          "pattern": "{SourceFile}.test.{ext}",
+          "describes": "Component/Class name",
+          "its": "should {behavior}"
+        },
+        "integration": {
+          "location": "tests/integration/**/*.test.ts",
+          "pattern": "{feature}-flow.test.ts",
+          "describes": "Feature Flow",
+          "its": "completes {scenario}"
+        },
+        "e2e": {
+          "location": "tests/e2e/**/*.e2e.ts",
+          "pattern": "{user-journey}.e2e.ts",
+          "describes": "User Journey",
+          "its": "user can {action}"
+        },
+        "fixtures": {
+          "location": "tests/fixtures/**/*.{ts,json}",
+          "pattern": "{entity}.fixture.{ext}",
+          "exports": "{entity}Fixtures"
+        }
+      },
+      
+      "jobs": {
+        "jobs": {
+          "location": "jobs/**/*.ts",
+          "pattern": "PascalCase + Job",
+          "exports": "class {Action}Job",
+          "methods": ["handle", "failed", "retry"],
+          "example": "SendEmailJob.ts"
+        },
+        "queues": {
+          "location": "queues/**/*.ts",
+          "pattern": "PascalCase + Queue",
+          "exports": "const {entity}Queue",
+          "methods": ["add", "process", "pause", "resume"]
+        },
+        "workers": {
+          "location": "workers/**/*.ts",
+          "pattern": "PascalCase + Worker",
+          "exports": "class {Purpose}Worker",
+          "methods": ["start", "stop", "process"]
+        },
+        "cron": {
+          "location": "cron/**/*.ts",
+          "pattern": "{schedule}_{task}.ts",
+          "example": "daily_cleanup.ts",
+          "exports": "function {task}Cron"
+        }
+      },
+      
+      "python": {
+        "modules": {
+          "location": "**/*.py",
+          "filePattern": "^[a-z_]+\\.py$",
+          "pattern": "snake_case",
+          "exports": "functions, classes, constants",
+          "example": "user_service.py"
+        },
+        "packages": {
+          "location": "**/",
+          "pattern": "snake_case with __init__.py",
+          "example": "email_queue/"
+        },
+        "functions": {
+          "pattern": "snake_case verb_noun",
+          "regex": "^[a-z_]+$",
+          "verbs": ["same as JS but snake_case"],
+          "example": "fetch_user(), validate_email()"
+        },
+        "classes": {
+          "pattern": "PascalCase",
+          "regex": "^[A-Z][a-zA-Z0-9]+$",
+          "example": "class UserService:"
+        },
+        "constants": {
+          "pattern": "UPPER_SNAKE_CASE",
+          "regex": "^[A-Z_]+$",
+          "example": "MAX_RETRIES = 3"
+        },
+        "booleans": {
+          "pattern": "snake_case with prefix",
+          "prefixes": ["is_", "has_", "can_", "should_"],
+          "example": "is_active, has_permission"
+        },
+        "tests": {
+          "pattern": "test_*.py or *_test.py",
+          "class": "TestClassName",
+          "method": "test_should_behavior",
+          "example": "test_user_service.py"
+        },
+        "private": {
+          "pattern": "_prefix for internal",
+          "example": "_internal_method()"
+        }
+      }
+    },
+    
+    "namingRules": {
+      "sql": {
+        "tables": {
+          "pattern": "plural_snake_case",
+          "example": "users, user_profiles"
+        },
+        "columns": {
+          "pattern": "snake_case",
+          "primaryKey": "{table_singular}_id",
+          "foreignKey": "{related_table_singular}_id",
+          "timestamps": ["created_at", "updated_at", "deleted_at"],
+          "booleans": "is_* or has_*"
+        },
+        "indexes": {
+          "pattern": "idx_{table}_{column(s)}",
+          "example": "idx_users_email"
+        },
+        "constraints": {
+          "pattern": "{table}_{type}_{columns}",
+          "example": "users_unique_email"
+        },
+        "procedures": {
+          "pattern": "sp_{action}_{entity}",
+          "example": "sp_update_user_status"
+        },
+        "views": {
+          "pattern": "vw_{entity}_{purpose}",
+          "example": "vw_users_summary"
+        }
+      },
+      
+      "api": {
+        "endpoints": {
+          "pattern": "/api/{resource}",
+          "restful": {
+            "GET /api/users": "List all",
+            "GET /api/users/:id": "Get one",
+            "POST /api/users": "Create",
+            "PUT /api/users/:id": "Update",
+            "DELETE /api/users/:id": "Delete"
+          },
+          "actions": {
+            "pattern": "/api/{resource}/:id/{action}",
+            "example": "/api/users/:id/activate"
+          }
+        }
+      },
+      
+      "environment": {
+        "variables": {
+          "pattern": "UPPER_SNAKE_CASE",
+          "examples": ["DATABASE_URL", "API_KEY", "NODE_ENV"]
+        },
+        "files": {
+          ".env": "Local development",
+          ".env.example": "Template",
+          ".env.production": "Production",
+          ".env.test": "Testing"
+        }
+      }
+    },
+    
+    "verbTaxonomyComplete": {
+      "frontend": {
+        "render": ["render", "display", "show", "paint", "draw"],
+        "interact": ["click", "hover", "focus", "blur", "scroll", "drag", "drop"],
+        "animate": ["animate", "transition", "fade", "slide", "bounce", "rotate"],
+        "form": ["submit", "validate", "clear", "reset", "populate"]
+      },
+      "backend": {
+        "serve": ["serve", "handle", "process", "route", "forward", "proxy"],
+        "auth": ["authenticate", "authorize", "login", "logout", "verify", "refresh"],
+        "validate": ["validate", "sanitize", "escape", "check", "ensure"],
+        "transform": ["transform", "map", "reduce", "filter", "aggregate"]
+      },
+      "database": {
+        "query": ["select", "insert", "update", "delete", "upsert", "merge"],
+        "migrate": ["migrate", "rollback", "seed", "truncate", "backup", "restore"],
+        "transact": ["begin", "commit", "rollback", "savepoint"],
+        "index": ["index", "reindex", "analyze", "vacuum"]
+      },
+      "async": {
+        "queue": ["enqueue", "dequeue", "process", "retry", "fail", "complete"],
+        "schedule": ["schedule", "cron", "delay", "throttle", "debounce"],
+        "stream": ["stream", "pipe", "buffer", "flush", "drain"]
+      },
+      "infrastructure": {
+        "deploy": ["deploy", "rollout", "scale", "provision", "terminate"],
+        "monitor": ["monitor", "track", "alert", "log", "trace", "profile"],
+        "manage": ["start", "stop", "restart", "reload", "configure"]
+      }
+    },
+    
+    "fileExtensions": {
+      "code": {
+        "typescript": [".ts", ".tsx", ".d.ts", ".mts", ".cts"],
+        "javascript": [".js", ".jsx", ".mjs", ".cjs"],
+        "python": [".py", ".pyi", ".pyx"],
+        "styles": [".css", ".scss", ".sass", ".less", ".styl"],
+        "markup": [".html", ".xml", ".svg"]
+      },
+      "data": {
+        "config": [".json", ".yaml", ".yml", ".toml", ".ini"],
+        "database": [".sql", ".prisma", ".graphql"],
+        "env": [".env", ".env.*"]
+      },
+      "docs": {
+        "markdown": [".md", ".mdx"],
+        "other": [".rst", ".txt", ".pdf"]
+      },
+      "infrastructure": {
+        "docker": ["Dockerfile", ".dockerfile", "docker-compose.yml"],
+        "ci": [".yml", ".yaml"],
+        "terraform": [".tf", ".tfvars"],
+        "scripts": [".sh", ".bash", ".zsh", ".ps1"]
+      },
+      "assets": {
+        "images": [".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico"],
+        "fonts": [".woff", ".woff2", ".ttf", ".otf"],
+        "media": [".mp4", ".webm", ".mp3", ".wav"]
+      }
+    }
+  }
+}

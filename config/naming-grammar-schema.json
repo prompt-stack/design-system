@@ -1,0 +1,230 @@
+{
+  "namingGrammar": {
+    "verbTaxonomy": {
+      "data": ["fetch", "get", "list", "create", "update", "delete", "save", "load", "sync", "query"],
+      "view": ["render", "display", "show", "hide", "toggle", "open", "close", "reveal", "collapse"],
+      "state": ["use", "set", "clear", "reset", "initialize", "restore", "manage", "track"],
+      "transform": ["format", "parse", "convert", "serialize", "deserialize", "normalize", "stringify", "slugify"],
+      "validation": ["validate", "verify", "check", "ensure", "assert", "confirm", "test"],
+      "events": ["handle", "on", "emit", "dispatch", "listen", "trigger", "fire"],
+      "async": ["queue", "process", "retry", "poll", "stream", "defer", "schedule"],
+      "infra": ["build", "deploy", "migrate", "seed", "compile", "bundle", "optimize"]
+    },
+    
+    "fileTypes": {
+      "Component": {
+        "location": "src/components/**/*.tsx",
+        "filePattern": "^[A-Z][a-zA-Z0-9]+\\.tsx$",
+        "exportPattern": "default",
+        "exportName": "PascalCase",
+        "allowedVerbs": ["render", "display", "show"],
+        "propsType": "{ComponentName}Props",
+        "imports": ["hooks", "utils", "components", "types"],
+        "forbidden": ["pages", "direct API calls"],
+        "example": "Button.tsx exports default function Button()"
+      },
+      
+      "Hook": {
+        "location": "src/hooks/**/*.ts",
+        "filePattern": "^use[A-Z][a-zA-Z0-9]+\\.ts$",
+        "exportPattern": "named",
+        "exportName": "use{Feature}",
+        "allowedVerbs": ["use", "set", "clear", "reset", "manage"],
+        "returns": "object or tuple",
+        "imports": ["hooks", "utils", "services", "types"],
+        "forbidden": ["components"],
+        "example": "useAuth.ts exports function useAuth()"
+      },
+      
+      "Utility": {
+        "location": "src/utils/**/*.ts",
+        "filePattern": "^[a-z][a-zA-Z0-9]+\\.ts$",
+        "exportPattern": "named",
+        "exportName": "{verb}{Noun}",
+        "allowedVerbs": ["format", "parse", "convert", "validate", "generate", "calculate"],
+        "constraints": {"pure": true, "sideEffects": false},
+        "imports": ["utils", "constants", "types"],
+        "forbidden": ["hooks", "components", "services"],
+        "example": "dateUtils.ts exports function formatDate()"
+      },
+      
+      "Service": {
+        "location": "src/services/**/*.ts",
+        "filePattern": "^[A-Z][a-zA-Z0-9]+(Service|Api)\\.ts$",
+        "exportPattern": "class or object",
+        "exportName": "{Domain}Service|{Domain}Api",
+        "allowedVerbs": ["fetch", "get", "create", "update", "delete", "query"],
+        "imports": ["utils", "constants", "types"],
+        "forbidden": ["components", "hooks"],
+        "example": "UserService.ts exports class UserService"
+      },
+      
+      "Page": {
+        "location": "src/pages/**/*.tsx",
+        "filePattern": "^[A-Z][a-zA-Z0-9]+Page\\.tsx$",
+        "exportPattern": "default",
+        "exportName": "{Name}Page",
+        "allowedVerbs": ["render", "load", "handle"],
+        "imports": ["features", "components", "hooks", "services"],
+        "forbidden": ["other pages"],
+        "example": "InboxPage.tsx exports default function InboxPage()"
+      },
+      
+      "Type": {
+        "location": "src/types/**/*.ts",
+        "filePattern": "^[a-zA-Z0-9]+\\.ts$",
+        "exportPattern": "named",
+        "exportName": "PascalCase",
+        "allowedVerbs": [],
+        "constraints": {"noImplementation": true},
+        "imports": ["types"],
+        "forbidden": ["any implementation"],
+        "example": "types.ts exports type User = {}"
+      },
+      
+      "Constant": {
+        "location": "src/constants/**/*.ts",
+        "filePattern": "^[a-z][a-zA-Z0-9]+\\.ts$",
+        "exportPattern": "named",
+        "exportName": "UPPER_SNAKE_CASE",
+        "allowedVerbs": [],
+        "imports": ["types"],
+        "forbidden": ["functions", "classes"],
+        "example": "config.ts exports const MAX_FILE_SIZE = 5000000"
+      },
+      
+      "Error": {
+        "location": "src/errors/**/*.ts",
+        "filePattern": "^[A-Z][a-zA-Z0-9]+Error\\.ts$",
+        "exportPattern": "class",
+        "exportName": "{Name}Error",
+        "extends": "Error",
+        "example": "AuthError.ts exports class AuthError extends Error"
+      },
+      
+      "Middleware": {
+        "location": "src/middleware/**/*.ts",
+        "filePattern": "^[a-z][a-zA-Z0-9]+Middleware\\.ts$",
+        "exportPattern": "function",
+        "exportName": "{name}Middleware",
+        "allowedVerbs": ["check", "validate", "log", "auth"],
+        "example": "authMiddleware.ts exports function authMiddleware()"
+      },
+      
+      "Worker": {
+        "location": "src/workers/**/*.ts",
+        "filePattern": "^[A-Z][a-zA-Z0-9]+Worker\\.ts$",
+        "exportPattern": "class",
+        "exportName": "{Name}Worker",
+        "allowedVerbs": ["process", "handle", "run"],
+        "example": "EmailWorker.ts exports class EmailWorker"
+      },
+      
+      "Selector": {
+        "location": "src/selectors/**/*.ts",
+        "filePattern": "^[a-z][a-zA-Z0-9]+Selectors\\.ts$",
+        "exportPattern": "named",
+        "exportName": "select{Feature}",
+        "allowedVerbs": ["select", "get", "derive"],
+        "constraints": {"pure": true, "memoized": true},
+        "example": "userSelectors.ts exports function selectUserById()"
+      },
+      
+      "Factory": {
+        "location": "src/factories/**/*.ts",
+        "filePattern": "^[a-z][a-zA-Z0-9]+Factory\\.ts$",
+        "exportPattern": "function",
+        "exportName": "create{Thing}",
+        "allowedVerbs": ["create", "build", "make"],
+        "example": "userFactory.ts exports function createUser()"
+      }
+    },
+    
+    "casingRules": {
+      "function": {
+        "pattern": "camelCase",
+        "regex": "^[a-z][a-zA-Z0-9]*$",
+        "mustStartWith": ["verb from verbTaxonomy"]
+      },
+      "component": {
+        "pattern": "PascalCase",
+        "regex": "^[A-Z][a-zA-Z0-9]+$"
+      },
+      "hook": {
+        "pattern": "camelCase with use prefix",
+        "regex": "^use[A-Z][a-zA-Z0-9]+$"
+      },
+      "boolean": {
+        "pattern": "camelCase with prefix",
+        "regex": "^(is|has|can|should|will|did)[A-Z][a-zA-Z0-9]*$"
+      },
+      "constant": {
+        "pattern": "UPPER_SNAKE_CASE",
+        "regex": "^[A-Z][A-Z0-9_]*$"
+      },
+      "cssClass": {
+        "pattern": "kebab-case BEM",
+        "regex": "^[a-z][a-z0-9-]*(__|--)?[a-z0-9-]*$"
+      },
+      "cssVariable": {
+        "pattern": "kebab-case with prefix",
+        "regex": "^--[a-z][a-z0-9-]*$"
+      },
+      "directory": {
+        "pattern": "kebab-case",
+        "regex": "^[a-z][a-z0-9-]*$"
+      }
+    },
+    
+    "importRules": {
+      "components": {
+        "canImport": ["hooks", "utils", "components", "types", "constants"],
+        "cannotImport": ["pages", "services/*.ts"]
+      },
+      "hooks": {
+        "canImport": ["hooks", "utils", "services", "types", "constants"],
+        "cannotImport": ["components", "pages"]
+      },
+      "utils": {
+        "canImport": ["utils", "types", "constants"],
+        "cannotImport": ["hooks", "components", "services", "pages"]
+      },
+      "services": {
+        "canImport": ["utils", "types", "constants"],
+        "cannotImport": ["components", "hooks", "pages"]
+      },
+      "pages": {
+        "canImport": ["*"],
+        "cannotImport": ["pages"]
+      }
+    },
+    
+    "specialPatterns": {
+      "eventHandler": {
+        "pattern": "handle{Event}",
+        "location": "inside components",
+        "example": "handleClick, handleSubmit"
+      },
+      "eventProp": {
+        "pattern": "on{Event}",
+        "location": "component props",
+        "example": "onClick, onSuccess"
+      },
+      "hoc": {
+        "pattern": "with{Feature}",
+        "location": "src/hocs",
+        "example": "withAuth, withTheme"
+      },
+      "actionType": {
+        "pattern": "VERB_NOUN",
+        "location": "reducer actions",
+        "example": "ADD_TODO, FETCH_USER_SUCCESS"
+      },
+      "testDescription": {
+        "pattern": "behavior description",
+        "location": "test files",
+        "example": "should render user information"
+      }
+    }
+  }
+}
