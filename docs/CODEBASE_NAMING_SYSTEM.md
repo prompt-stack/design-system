@@ -82,7 +82,7 @@ server/
 
 ### Scripts
 ```
-design-system/
+grammar-ops/
 └── scripts/
     ├── audit-*.sh     # Compliance checks
     ├── add-*.sh       # File modifiers

@@ -13,7 +13,7 @@
 3. ✅ `metadata-migration.sh` → `migrate-metadata.sh`
 4. ✅ `llm-safe-edit.sh` → `check-llm-permissions.sh`
 5. ✅ `smart-metadata-update.sh` → `update-metadata-smart.sh`
-6. ✅ `llm-aware-scan.sh` → `scan-llm-aware.sh`
+6. ✅ `llm-aware-scan.sh` → `scan-metadata.sh`
 
 ### References Updated
 All references to renamed scripts were automatically updated in:

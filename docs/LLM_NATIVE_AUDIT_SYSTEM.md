@@ -10,7 +10,7 @@ Every artifact in the system must be richly annotated with machine-readable meta
 
 ```yaml
 ---
-@id: design-system/audit-css-naming
+@id: grammar-ops/audit-css-naming
 @type: validation-script
 @version: 1.2.0
 @dependencies: [glob, chalk, BEM-validator]
@@ -29,11 +29,11 @@ The codebase becomes a searchable knowledge graph for LLMs.
   "id": "audit-css-naming",
   "type": "script",
   "purpose": "Validates CSS files for BEM compliance",
-  "location": "/design-system/scripts/audit-css-naming.js",
+  "location": "/grammar-ops/scripts/audit-css-naming.js",
   "metadata": {
     "created": "2025-07-19",
     "lastModified": "2025-07-21",
-    "author": "@design-system-team",
+    "author": "@grammar-ops-team",
     "compliance": ["BEM", "CSS-Architecture"]
   },
   "relationships": {
@@ -82,7 +82,7 @@ Every audit run creates a permanent, searchable record.
 ### 1. Audit Infrastructure
 
 ```
-/design-system/
+/grammar-ops/
   /audit-system/
     manifest.json           # Master registry of all audits
     /schemas/              # JSON schemas for validation

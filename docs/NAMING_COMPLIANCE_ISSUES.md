@@ -8,7 +8,7 @@
 3. `migrate-metadata.sh` → `migrate-metadata.sh`
 4. `check-llm-permissions.sh` → `check-llm-permissions.sh`
 5. `update-metadata-smart.sh` → `update-metadata-smart.sh`
-6. `scan-llm-aware.sh` → `scan-llm-aware.sh`
+6. `scan-llm-aware.sh` → `scan-metadata.sh`
 
 ### Pattern to follow:
 ```

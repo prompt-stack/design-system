@@ -49,7 +49,7 @@ check_react_components() {
             
             # Check for matching CSS file
             css_file="${file%.tsx}.css"
-            expected_css="src/styles/components/${filename,,}.css"
+            expected_css="src/styles/components/$(echo "$filename" | tr '[:upper:]' '[:lower:]').css"
             
             if [ ! -f "$expected_css" ] && [[ "$file" =~ components/ ]]; then
                 echo -e "${YELLOW}⚠${NC}  Missing CSS file: $expected_css"

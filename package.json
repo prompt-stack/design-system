@@ -1,0 +1,32 @@
+{
+  "name": "@grammar-ops/core",
+  "version": "1.0.0",
+  "description": "Grammar-based development system for LLM-assisted coding",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "audit": "bash scripts/audit-all.sh",
+    "audit:tests": "bash scripts/audit-tests.sh",
+    "generate:test": "bash scripts/generate-test.sh"
+  },
+  "keywords": [
+    "llm",
+    "ai-assisted-development",
+    "testing",
+    "code-standards",
+    "grammar-ops"
+  ],
+  "author": "",
+  "license": "MIT",
+  "peerDependencies": {
+    "jest": "^29.0.0",
+    "cypress": "^13.0.0",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/jest-dom": "^6.0.0",
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

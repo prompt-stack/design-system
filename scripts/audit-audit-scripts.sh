@@ -22,7 +22,7 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 # Script directory
-SCRIPT_DIR="design-system/scripts"
+SCRIPT_DIR="grammar-ops/scripts"
 
 # Required metadata fields for LLM-native compliance
 REQUIRED_METADATA=(
@@ -137,7 +137,7 @@ cat << 'EOF'
 For Shell Scripts:
 #!/bin/bash
 
-# @id design-system/audit-[name]
+# @id grammar-ops/audit-[name]
 # @version 1.0.0
 # @type audit-script
 # @description Brief description of what this audits
@@ -150,7 +150,7 @@ For Node.js Scripts:
 #!/usr/bin/env node
 
 /**
- * @id design-system/audit-[name]
+ * @id grammar-ops/audit-[name]
  * @version 1.0.0
  * @type audit-script
  * @description Brief description of what this audits

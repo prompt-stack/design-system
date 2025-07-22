@@ -6,7 +6,7 @@
 
 # Master audit runner - discovers and executes all audit scripts
 
-SCRIPT_DIR="design-system/scripts"
+SCRIPT_DIR="grammar-ops/scripts"
 FAILED_AUDITS=0
 PASSED_AUDITS=0
 TOTAL_AUDITS=0
@@ -29,7 +29,7 @@ while [[ $# -gt 0 ]]; do
         --help)
             echo "Usage: $0 [--format console|json]"
             echo ""
-            echo "Runs all audit scripts in the design-system/scripts directory"
+            echo "Runs all audit scripts in the grammar-ops/scripts directory"
             echo ""
             echo "Options:"
             echo "  --format    Output format (console or json)"

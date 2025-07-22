@@ -43,10 +43,10 @@ find src/components -name "*.tsx" -exec ./add-llm-directives.sh {} \;
 ### 2. Scan with Awareness
 ```bash
 # Find editable files
-./scan-llm-aware.sh editable
+./scan-metadata.sh editable
 
 # Map entire codebase
-./scan-llm-aware.sh map
+./scan-metadata.sh map
 ```
 
 ### 3. Safe Editing

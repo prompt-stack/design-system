@@ -25,10 +25,8 @@ NC='\033[0m' # No Color
 
 # Check if component name was provided
 if [ -z "$1" ]; then
-    echo -e "${RED}Error: Please provide a component name${NC}"
-    echo "Usage: $0 ComponentName"
-    echo "Example: $0 Button"
-    exit 1
+    # If no component specified, run audit-all-components
+    exec ./grammar-ops/scripts/audit-all-components.sh
 fi
 
 COMPONENT_NAME=$1

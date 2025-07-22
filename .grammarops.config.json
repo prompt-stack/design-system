@@ -1,0 +1,32 @@
+{
+  "paths": {
+    "src": "../src",
+    "components": "../src/components",
+    "hooks": "../src/hooks",
+    "services": "../src/services",
+    "styles": "../src/styles",
+    "tests": "../src/__tests__",
+    "cypress": "../cypress"
+  },
+  "testing": {
+    "unit": {
+      "runner": "jest",
+      "coverage": {
+        "statements": 80,
+        "branches": 70,
+        "functions": 70,
+        "lines": 80
+      }
+    },
+    "e2e": {
+      "runner": "cypress",
+      "baseUrl": "http://localhost:5173"
+    }
+  },
+  "validation": {
+    "strictMode": true,
+    "enforceNaming": true,
+    "requireTests": true,
+    "requireDocs": false
+  }
+}

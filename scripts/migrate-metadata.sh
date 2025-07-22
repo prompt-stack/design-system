@@ -68,7 +68,7 @@ echo -e "${YELLOW}Phase 3: Updating existing metadata${NC}"
 echo "----------------------------------"
 
 if [ "$1" != "--dry-run" ]; then
-    ./design-system/scripts/update-metadata-smart.sh --update-all
+    ./grammar-ops/scripts/update-metadata-smart.sh --update-all
 else
     echo "Would update $files_with_old_metadata files with old metadata"
 fi
@@ -79,7 +79,7 @@ echo -e "${YELLOW}Phase 4: Adding metadata to new files${NC}"
 echo "------------------------------------"
 
 if [ "$1" != "--dry-run" ]; then
-    ./design-system/scripts/add-universal-metadata.sh --all
+    ./grammar-ops/scripts/add-universal-metadata.sh --all
 else
     echo "Would add metadata to $files_without_metadata files"
 fi

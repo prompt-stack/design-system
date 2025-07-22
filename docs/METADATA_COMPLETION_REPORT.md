@@ -12,7 +12,7 @@ We've successfully added universal metadata to **ALL** file types across the cod
 
 ### Shell Scripts (.sh)
 - ✅ **19/19 files** - 100% complete
-- All design-system scripts have metadata
+- All grammar-ops scripts have metadata
 - Other utility scripts updated
 
 ### JavaScript Files (.js)

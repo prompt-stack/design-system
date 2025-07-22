@@ -21,21 +21,17 @@ check_script_naming() {
     local issues=0
     
     # Check shell scripts
-    find design-system/scripts -name "*.sh" | while read file; do
+    find grammar-ops/scripts -name "*.sh" | while read file; do
         local filename=$(basename "$file")
         
         # Should follow action-target.sh pattern
-        if ! echo "$filename" | grep -qE '^(audit|add|build|find|validate|update|generate|migrate|check)-[a-z-]+\.sh$'; then
+        if ! echo "$filename" | grep -qE '^(audit|add|build|find|validate|update|generate|migrate|check|scan|rename)-[a-z-]+\.sh$'; then
             echo -e "${RED}❌ $filename${NC} - doesn't follow {action}-{target}.sh pattern"
             issues=$((issues + 1))
         fi
     done
     
-    # Specific known issues
-    if [ -f "design-system/scripts/audit-css.sh" ]; then
-        echo -e "${YELLOW}⚠ audit-css.sh should be renamed to audit-css.sh${NC}"
-        issues=$((issues + 1))
-    fi
+    # Removed false positive check for audit-css.sh
     
     if [ $issues -eq 0 ]; then
         echo -e "${GREEN}✅ All scripts follow naming conventions${NC}"
@@ -59,7 +55,7 @@ check_component_naming() {
         fi
         
         # Check if CSS file exists and is lowercase
-        local css_file="src/styles/components/${filename,,}.css"
+        local css_file="src/styles/components/$(echo "$filename" | tr '[:upper:]' '[:lower:]').css"
         if [ ! -f "$css_file" ]; then
             echo -e "${YELLOW}⚠ Missing CSS: $css_file${NC}"
         fi
@@ -199,6 +195,6 @@ if [ $TOTAL_ISSUES -eq 0 ]; then
     exit 0
 else
     echo -e "${RED}Found $TOTAL_ISSUES naming issues${NC}"
-    echo -e "\nRefer to: design-system/docs/CODEBASE_NAMING_SYSTEM.md"
+    echo -e "\nRefer to: grammar-ops/docs/CODEBASE_NAMING_SYSTEM.md"
     exit 1
 fi

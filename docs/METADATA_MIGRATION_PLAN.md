@@ -17,43 +17,43 @@ Update all 76 TypeScript/React files to have universal metadata format that enab
 ### Phase 1: Components (23 files)
 These are the building blocks - update first
 ```bash
-./design-system/scripts/update-metadata-batch.sh components
+./grammar-ops/scripts/update-metadata-batch.sh components
 ```
 
 ### Phase 2: Layout (4 files)
 Core layout structure
 ```bash
-./design-system/scripts/update-metadata-batch.sh layout
+./grammar-ops/scripts/update-metadata-batch.sh layout
 ```
 
 ### Phase 3: Features (8 files)
 Feature modules that use components
 ```bash
-./design-system/scripts/update-metadata-batch.sh features
+./grammar-ops/scripts/update-metadata-batch.sh features
 ```
 
 ### Phase 4: Pages (4 files)
 Entry points - need suggest-only permissions
 ```bash
-./design-system/scripts/update-metadata-batch.sh pages
+./grammar-ops/scripts/update-metadata-batch.sh pages
 ```
 
 ### Phase 5: Hooks (8 files)
 Shared logic and state management
 ```bash
-./design-system/scripts/update-metadata-batch.sh hooks
+./grammar-ops/scripts/update-metadata-batch.sh hooks
 ```
 
 ### Phase 6: Playground (18 files)
 Demo and testing components
 ```bash
-./design-system/scripts/update-metadata-batch.sh playground
+./grammar-ops/scripts/update-metadata-batch.sh playground
 ```
 
 ### Phase 7: Remaining Files
 App.tsx, main.tsx, and any stragglers
 ```bash
-./design-system/scripts/add-universal-metadata.sh --all
+./grammar-ops/scripts/add-universal-metadata.sh --all
 ```
 
 ## Verification Steps

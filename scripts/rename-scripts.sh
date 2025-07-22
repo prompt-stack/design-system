@@ -21,7 +21,8 @@ RENAME_LIST=(
     "migrate-metadata.sh:migrate-metadata.sh"
     "check-llm-permissions.sh:check-llm-permissions.sh"
     "update-metadata-smart.sh:update-metadata-smart.sh"
-    "scan-llm-aware.sh:scan-llm-aware.sh"
+    "scan-llm-aware.sh:scan-metadata.sh"
+    "fix-script-naming.sh:rename-scripts.sh"
 )
 
 DRY_RUN=false
@@ -41,8 +42,8 @@ FAILED=0
 for mapping in "${RENAME_LIST[@]}"; do
     OLD_NAME="${mapping%%:*}"
     NEW_NAME="${mapping#*:}"
-    OLD_PATH="design-system/scripts/$OLD_NAME"
-    NEW_PATH="design-system/scripts/$NEW_NAME"
+    OLD_PATH="grammar-ops/scripts/$OLD_NAME"
+    NEW_PATH="grammar-ops/scripts/$NEW_NAME"
     
     if [ -f "$OLD_PATH" ]; then
         echo -e "${YELLOW}Found:${NC} $OLD_NAME"
@@ -82,7 +83,7 @@ done
 
 # Check for any remaining non-compliant scripts
 echo -e "\n${BLUE}Checking for other non-compliant scripts...${NC}"
-find design-system/scripts -name "*.sh" | while read script; do
+find grammar-ops/scripts -name "*.sh" | while read script; do
     filename=$(basename "$script")
     # Check if follows pattern: {action}-{target}.sh
     if ! echo "$filename" | grep -qE '^(audit|add|build|find|validate|update|generate|migrate|check|scan|fix)-[a-z-]+\.sh$'; then

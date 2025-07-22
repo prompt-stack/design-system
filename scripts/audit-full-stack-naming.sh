@@ -64,15 +64,15 @@ echo -e "${BLUE}🌐 Full Stack Naming Audit${NC}"
 echo "=========================="
 
 # Frontend audits
-run_audit "frontend" "design-system/scripts/audit-naming.sh" "Frontend Naming (Components, Hooks, etc.)"
-run_audit "css" "design-system/scripts/audit-css-naming.js" "CSS/Style Naming"
+run_audit "frontend" "grammar-ops/scripts/audit-naming.sh" "Frontend Naming (Components, Hooks, etc.)"
+run_audit "css" "grammar-ops/scripts/audit-css-naming.js" "CSS/Style Naming"
 
 # Backend audits
-run_audit "backend" "design-system/scripts/audit-backend-naming.sh" "Backend API Naming"
-run_audit "database" "design-system/scripts/audit-database-naming.sh" "Database/SQL Naming"
+run_audit "backend" "grammar-ops/scripts/audit-backend-naming.sh" "Backend API Naming"
+run_audit "database" "grammar-ops/scripts/audit-database-naming.sh" "Database/SQL Naming"
 
 # Infrastructure audits
-run_audit "scripts" "design-system/scripts/audit-naming-compliance.sh" "Script File Naming"
+run_audit "scripts" "grammar-ops/scripts/audit-naming-compliance.sh" "Script File Naming"
 
 # Additional checks
 if [ "$OUTPUT_FORMAT" = "console" ]; then
@@ -118,8 +118,8 @@ if [ "$OUTPUT_FORMAT" = "console" ]; then
     echo "✓ Files: {pattern}.{ext}"
     
     echo -e "\n${GREEN}Full grammar system defined in:${NC}"
-    echo "→ design-system/docs/FULL_STACK_GRAMMAR_SYSTEM.md"
-    echo "→ design-system/config/full-stack-grammar-schema.json"
+    echo "→ grammar-ops/docs/FULL_STACK_GRAMMAR_SYSTEM.md"
+    echo "→ grammar-ops/config/full-stack-grammar-schema.json"
 else
     echo '  }'
     echo '}'

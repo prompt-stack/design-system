@@ -6,8 +6,8 @@
 
 # This script scans all scripts and extracts their metadata to build a registry
 
-SCRIPT_DIR="design-system/scripts"
-OUTPUT_FILE="design-system/script-registry.json"
+SCRIPT_DIR="grammar-ops/scripts"
+OUTPUT_FILE="grammar-ops/script-registry.json"
 
 echo "{"
 echo '  "generated": "'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'",'

@@ -79,7 +79,7 @@ case "$1" in
         
     "--design-system")
         echo "=== Adding metadata to design-system scripts ==="
-        find design-system/scripts -name "*.sh" | while read file; do
+        find grammar-ops/scripts -name "*.sh" | while read file; do
             add_metadata_to_shell "$file"
         done
         ;;

@@ -45,7 +45,7 @@ process_batch() {
         # Check if has old metadata
         if grep -q "@layer\|@dependencies" "$file" 2>/dev/null; then
             # Use smart update
-            if ./design-system/scripts/update-metadata-smart.sh --single "$file" > /dev/null 2>&1; then
+            if ./grammar-ops/scripts/update-metadata-smart.sh --single "$file" > /dev/null 2>&1; then
                 echo -e "${GREEN}✓ Updated existing metadata${NC}"
                 success=$((success + 1))
             else
@@ -54,7 +54,7 @@ process_batch() {
             fi
         else
             # Use add metadata
-            if ./design-system/scripts/add-universal-metadata.sh --single "$file" > /dev/null 2>&1; then
+            if ./grammar-ops/scripts/add-universal-metadata.sh --single "$file" > /dev/null 2>&1; then
                 echo -e "${GREEN}✓ Added new metadata${NC}"
                 success=$((success + 1))
             else
@@ -105,7 +105,7 @@ case "$1" in
             if grep -q "@file.*@llm-" "$file" 2>/dev/null; then
                 echo "  Already has universal metadata"
             else
-                ./design-system/scripts/update-metadata-smart.sh --single "$file"
+                ./grammar-ops/scripts/update-metadata-smart.sh --single "$file"
             fi
         done
         ;;

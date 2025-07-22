@@ -60,7 +60,7 @@ Created complete naming conventions covering:
 
 **LLM Scripts:**
 - `add-llm-directives.sh` - Add permissions
-- `scan-llm-aware.sh` - Permission-aware scanning
+- `scan-metadata.sh` - Permission-aware scanning
 - `check-llm-permissions.sh` - Check before editing
 
 **Audit Scripts:**
@@ -86,7 +86,7 @@ Created complete naming conventions covering:
 - `migrate-metadata.sh` → `migrate-metadata.sh`
 - `check-llm-permissions.sh` → `check-llm-permissions.sh`
 - `update-metadata-smart.sh` → `update-metadata-smart.sh`
-- `scan-llm-aware.sh` → `scan-llm-aware.sh`
+- `scan-llm-aware.sh` → `scan-metadata.sh`
 
 ## Benefits Realized
 
