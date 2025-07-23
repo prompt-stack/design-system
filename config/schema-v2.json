@@ -1,0 +1,489 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Enhanced Grammar-Ops Configuration",
+  "description": "Context-aware configuration for grammar-ops with framework support",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Configuration schema version",
+      "default": "2.0.0"
+    },
+    "project": {
+      "type": "object",
+      "description": "Project information",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Project name"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["frontend", "backend", "fullstack", "library", "cli"],
+          "description": "Project type"
+        },
+        "language": {
+          "type": "string",
+          "enum": ["python", "typescript", "javascript", "mixed"],
+          "description": "Primary language"
+        }
+      },
+      "required": ["type", "language"]
+    },
+    "frameworks": {
+      "type": "object",
+      "description": "Framework detection and configuration",
+      "properties": {
+        "auto_detect": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically detect frameworks"
+        },
+        "detected": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of detected frameworks"
+        },
+        "frontend": {
+          "type": "string",
+          "enum": ["react", "vue", "angular", "nextjs", "svelte", "none"],
+          "description": "Frontend framework"
+        },
+        "backend": {
+          "type": "string",
+          "enum": ["fastapi", "django", "flask", "express", "nestjs", "none"],
+          "description": "Backend framework"
+        },
+        "testing": {
+          "type": "string",
+          "enum": ["pytest", "jest", "mocha", "unittest", "none"],
+          "description": "Testing framework"
+        }
+      }
+    },
+    "paths": {
+      "type": "object",
+      "description": "Project structure paths",
+      "properties": {
+        "frontend": {
+          "type": "string",
+          "default": "./frontend"
+        },
+        "backend": {
+          "type": "string",
+          "default": "./backend"
+        },
+        "components": {
+          "type": "string",
+          "default": "./src/components"
+        },
+        "services": {
+          "type": "string",
+          "default": "./src/services"
+        },
+        "tests": {
+          "type": "object",
+          "properties": {
+            "frontend": {
+              "type": "string",
+              "default": "./__tests__"
+            },
+            "backend": {
+              "type": "string",
+              "default": "./tests"
+            }
+          }
+        },
+        "exclude": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": ["node_modules", ".git", "__pycache__", "dist", "build"],
+          "description": "Paths to exclude from analysis"
+        }
+      }
+    },
+    "rules": {
+      "type": "object",
+      "description": "Naming convention rules",
+      "properties": {
+        "python": {
+          "type": "object",
+          "properties": {
+            "functions": {
+              "type": "object",
+              "properties": {
+                "require_verb_prefix": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "default": true
+                    },
+                    "exceptions": {
+                      "type": "object",
+                      "properties": {
+                        "cli_commands": {
+                          "type": "string",
+                          "enum": ["rails_style", "verb_noun", "both"],
+                          "default": "rails_style",
+                          "description": "CLI command naming style"
+                        },
+                        "test_functions": {
+                          "type": "string",
+                          "enum": ["test_prefix_only", "require_verb_after_test"],
+                          "default": "test_prefix_only"
+                        },
+                        "response_factories": {
+                          "type": "string",
+                          "enum": ["noun_response_pattern", "create_pattern", "both"],
+                          "default": "noun_response_pattern"
+                        },
+                        "event_handlers": {
+                          "type": "string",
+                          "enum": ["on_prefix", "handle_prefix", "both"],
+                          "default": "both"
+                        },
+                        "fixtures": {
+                          "type": "boolean",
+                          "default": true,
+                          "description": "Allow noun-only fixture names"
+                        }
+                      }
+                    }
+                  }
+                },
+                "async_prefix": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "Require async_ prefix for async functions"
+                }
+              }
+            },
+            "constants": {
+              "type": "object",
+              "properties": {
+                "style": {
+                  "type": "string",
+                  "enum": ["UPPER_CASE", "SCREAMING_SNAKE_CASE"],
+                  "default": "UPPER_CASE"
+                },
+                "detect_singletons": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Automatically detect singleton instances"
+                },
+                "allow_typevar": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Allow TypeVar naming conventions"
+                },
+                "allow_lowercase_config": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Allow lowercase for configuration objects"
+                }
+              }
+            },
+            "classes": {
+              "type": "object",
+              "properties": {
+                "style": {
+                  "type": "string",
+                  "enum": ["PascalCase", "CamelCase"],
+                  "default": "PascalCase"
+                },
+                "allow_single_letter": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "special_names": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "default": ["Meta", "Config"],
+                  "description": "Special class names to allow"
+                }
+              }
+            },
+            "modules": {
+              "type": "object",
+              "properties": {
+                "style": {
+                  "type": "string",
+                  "enum": ["snake_case", "kebab-case"],
+                  "default": "snake_case"
+                }
+              }
+            }
+          }
+        },
+        "typescript": {
+          "type": "object",
+          "properties": {
+            "interfaces": {
+              "type": "object",
+              "properties": {
+                "style": {
+                  "type": "string",
+                  "enum": ["PascalCase", "IPascalCase"],
+                  "default": "PascalCase"
+                },
+                "prefix": {
+                  "type": "string",
+                  "enum": ["none", "I", "Interface"],
+                  "default": "none"
+                }
+              }
+            },
+            "types": {
+              "type": "object",
+              "properties": {
+                "style": {
+                  "type": "string",
+                  "enum": ["PascalCase", "TPascalCase"],
+                  "default": "PascalCase"
+                }
+              }
+            },
+            "enums": {
+              "type": "object",
+              "properties": {
+                "style": {
+                  "type": "string",
+                  "enum": ["PascalCase", "UPPER_CASE"],
+                  "default": "PascalCase"
+                }
+              }
+            }
+          }
+        },
+        "css": {
+          "type": "object",
+          "properties": {
+            "methodology": {
+              "type": "string",
+              "enum": ["BEM", "SMACSS", "OOCSS", "Atomic", "none"],
+              "default": "BEM"
+            },
+            "case_style": {
+              "type": "string",
+              "enum": ["kebab-case", "camelCase", "snake_case"],
+              "default": "kebab-case"
+            }
+          }
+        }
+      }
+    },
+    "exceptions": {
+      "type": "object",
+      "description": "Project-specific exceptions",
+      "properties": {
+        "functions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Function names to exclude from verb prefix rule"
+        },
+        "constants": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Variable names to exclude from UPPER_CASE rule"
+        },
+        "patterns": {
+          "type": "object",
+          "properties": {
+            "allow": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Regex patterns to allow"
+            },
+            "ignore": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Regex patterns to ignore"
+            }
+          }
+        }
+      }
+    },
+    "enforcement": {
+      "type": "object",
+      "description": "How to enforce rules",
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": ["error", "warning", "info"],
+          "default": "warning"
+        },
+        "new_files_only": {
+          "type": "boolean",
+          "default": false,
+          "description": "Only enforce on new files"
+        },
+        "gradual_adoption": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "start_date": {
+              "type": "string",
+              "format": "date",
+              "description": "Date to start enforcement"
+            },
+            "phases": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "rules": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "date": {
+                    "type": "string",
+                    "format": "date"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "reporting": {
+      "type": "object",
+      "description": "Report generation settings",
+      "properties": {
+        "format": {
+          "type": "string",
+          "enum": ["text", "json", "html", "markdown"],
+          "default": "text"
+        },
+        "verbose": {
+          "type": "boolean",
+          "default": false
+        },
+        "show_context": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show function/class context in reports"
+        },
+        "max_issues": {
+          "type": "integer",
+          "default": 100,
+          "description": "Maximum issues to show in report"
+        },
+        "group_by": {
+          "type": "string",
+          "enum": ["file", "type", "severity", "rule"],
+          "default": "type"
+        }
+      }
+    },
+    "auto_fix": {
+      "type": "object",
+      "description": "Automatic fixing configuration",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "interactive": {
+          "type": "boolean",
+          "default": true,
+          "description": "Ask before each fix"
+        },
+        "safe_only": {
+          "type": "boolean",
+          "default": true,
+          "description": "Only apply safe fixes"
+        },
+        "backup": {
+          "type": "boolean",
+          "default": true,
+          "description": "Create backups before fixing"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "File metadata settings",
+      "properties": {
+        "add_to_new_files": {
+          "type": "boolean",
+          "default": true
+        },
+        "template": {
+          "type": "string",
+          "enum": ["minimal", "standard", "comprehensive"],
+          "default": "standard"
+        },
+        "required_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": ["purpose", "layer"]
+        }
+      }
+    },
+    "integrations": {
+      "type": "object",
+      "description": "Third-party integrations",
+      "properties": {
+        "pre_commit": {
+          "type": "boolean",
+          "default": false
+        },
+        "ci_cd": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "provider": {
+              "type": "string",
+              "enum": ["github", "gitlab", "jenkins", "circleci"],
+              "default": "github"
+            }
+          }
+        },
+        "ide": {
+          "type": "object",
+          "properties": {
+            "vscode": {
+              "type": "boolean",
+              "default": false
+            },
+            "pycharm": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": ["project", "rules"],
+  "additionalProperties": false
+}

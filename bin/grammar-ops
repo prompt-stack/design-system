@@ -1,0 +1,261 @@
+#!/usr/bin/env python3
+"""
+Enhanced Grammar-Ops CLI
+
+Main entry point for the enhanced grammar-ops tool with framework awareness,
+context-sensitive analysis, and helpful error messages.
+"""
+
+import argparse
+import sys
+from pathlib import Path
+
+# Add lib to Python path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+# Import our enhanced modules
+from lib.core import detect_frameworks
+from lib.analyzers import ContextAwareFunctionAnalyzer, SmartConstantAnalyzer
+from lib.reporters import EnhancedReporter
+
+
+def cmd_analyze(args):
+    """Analyze command with enhanced reporting."""
+    project_root = Path(args.path)
+    
+    # Detect frameworks
+    print("Detecting frameworks...")
+    detector = detect_frameworks(project_root)
+    frameworks = detector.get_frameworks()
+    if frameworks:
+        print(f"Detected: {', '.join(frameworks)}")
+    
+    # Create analyzers
+    func_analyzer = ContextAwareFunctionAnalyzer(detector)
+    const_analyzer = SmartConstantAnalyzer(detector)
+    
+    # Analyze files
+    print(f"\nAnalyzing {args.pattern}...")
+    all_issues = {
+        'functions': [],
+        'constants': []
+    }
+    
+    files = list(project_root.glob(args.pattern))
+    for file_path in files:
+        if any(skip in str(file_path) for skip in ['.git', '__pycache__', 'node_modules']):
+            continue
+        
+        # Analyze functions
+        func_issues = func_analyzer.analyze_file(file_path)
+        all_issues['functions'].extend(func_issues)
+        
+        # Analyze constants
+        const_issues = const_analyzer.analyze_file(file_path)
+        all_issues['constants'].extend(const_issues)
+    
+    # Report with enhanced formatting
+    reporter = EnhancedReporter(use_color=not args.no_color)
+    
+    if args.verbose:
+        # Show individual issues
+        for issue in all_issues['functions'][:args.max_issues]:
+            print(reporter.format_function_issue(issue))
+        
+        for issue in all_issues['constants'][:args.max_issues]:
+            print(reporter.format_constant_issue(issue))
+    
+    # Always show summary
+    print(reporter.generate_summary(all_issues))
+
+
+def cmd_learn(args):
+    """Learn from existing codebase."""
+    # Import here to avoid circular imports
+    sys.path.insert(0, str(Path(__file__).parent.parent / 'tools'))
+    from learn import PatternLearner
+    
+    project_root = Path(args.path)
+    learner = PatternLearner(project_root)
+    
+    print(f"Learning patterns from {project_root}...")
+    learner.learn_from_project()
+    
+    # Generate configuration
+    config = learner.generate_config()
+    
+    # Save configuration
+    output_path = Path(args.output)
+    import json
+    with open(output_path, 'w') as f:
+        json.dump(config, f, indent=2)
+    
+    print(f"\nConfiguration saved to: {output_path}")
+    
+    if args.report:
+        print("\n" + learner.generate_report())
+
+
+def cmd_migrate(args):
+    """Migrate code to conventions."""
+    # Import here to avoid circular imports
+    sys.path.insert(0, str(Path(__file__).parent.parent / 'tools'))
+    from migrate import CodeMigrator
+    
+    project_root = Path(args.path)
+    config_path = Path(args.config) if args.config else None
+    
+    migrator = CodeMigrator(project_root, config_path)
+    
+    if args.rollback:
+        migrator.rollback()
+        return
+    
+    # Analyze
+    print("Analyzing project...")
+    issues = migrator.analyze(args.pattern)
+    
+    if not issues['total']:
+        print("No issues found!")
+        return
+    
+    # Show summary
+    print(f"\nFound {issues['total']} issues:")
+    print(f"  Functions: {len(issues['functions'])}")
+    print(f"  Constants: {len(issues['constants'])}")
+    
+    # Migrate
+    migrator.migrate_interactive(issues, args.dry_run)
+    
+    # Save log
+    if not args.dry_run and migrator.fixed_files:
+        migrator.save_migration_log()
+
+
+def cmd_detect(args):
+    """Detect frameworks command."""
+    project_root = Path(args.path)
+    detector = detect_frameworks(project_root)
+    print(detector.get_report())
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Enhanced Grammar-Ops - Context-aware code convention enforcement",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  # Analyze current directory
+  grammar-ops analyze .
+  
+  # Learn from existing code
+  grammar-ops learn . -o my-conventions.json
+  
+  # Migrate code interactively
+  grammar-ops migrate . --dry-run
+  
+  # Detect frameworks
+  grammar-ops detect .
+"""
+    )
+    
+    # Global options
+    parser.add_argument(
+        "--no-color",
+        action="store_true",
+        help="Disable colored output"
+    )
+    
+    # Subcommands
+    subparsers = parser.add_subparsers(dest="command", help="Command to run")
+    
+    # Analyze command
+    analyze_parser = subparsers.add_parser(
+        "analyze",
+        help="Analyze code for naming convention violations"
+    )
+    analyze_parser.add_argument("path", help="Project path to analyze")
+    analyze_parser.add_argument(
+        "-p", "--pattern",
+        default="**/*.py",
+        help="File pattern to analyze (default: **/*.py)"
+    )
+    analyze_parser.add_argument(
+        "-v", "--verbose",
+        action="store_true",
+        help="Show detailed issues"
+    )
+    analyze_parser.add_argument(
+        "-m", "--max-issues",
+        type=int,
+        default=20,
+        help="Maximum issues to show (default: 20)"
+    )
+    analyze_parser.set_defaults(func=cmd_analyze)
+    
+    # Learn command
+    learn_parser = subparsers.add_parser(
+        "learn",
+        help="Learn naming patterns from existing code"
+    )
+    learn_parser.add_argument("path", help="Project path to learn from")
+    learn_parser.add_argument(
+        "-o", "--output",
+        default=".grammarops.learned.json",
+        help="Output config file (default: .grammarops.learned.json)"
+    )
+    learn_parser.add_argument(
+        "-r", "--report",
+        action="store_true",
+        help="Show detailed report"
+    )
+    learn_parser.set_defaults(func=cmd_learn)
+    
+    # Migrate command
+    migrate_parser = subparsers.add_parser(
+        "migrate",
+        help="Migrate code to follow conventions"
+    )
+    migrate_parser.add_argument("path", help="Project path to migrate")
+    migrate_parser.add_argument(
+        "-c", "--config",
+        help="Configuration file to use"
+    )
+    migrate_parser.add_argument(
+        "-p", "--pattern",
+        default="**/*.py",
+        help="File pattern to migrate (default: **/*.py)"
+    )
+    migrate_parser.add_argument(
+        "-d", "--dry-run",
+        action="store_true",
+        help="Show changes without applying"
+    )
+    migrate_parser.add_argument(
+        "--rollback",
+        action="store_true",
+        help="Rollback previous migration"
+    )
+    migrate_parser.set_defaults(func=cmd_migrate)
+    
+    # Detect command
+    detect_parser = subparsers.add_parser(
+        "detect",
+        help="Detect frameworks in use"
+    )
+    detect_parser.add_argument("path", help="Project path")
+    detect_parser.set_defaults(func=cmd_detect)
+    
+    # Parse and run
+    args = parser.parse_args()
+    
+    if not args.command:
+        parser.print_help()
+        sys.exit(1)
+    
+    # Run the command
+    args.func(args)
+
+
+if __name__ == "__main__":
+    main()

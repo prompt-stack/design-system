@@ -1,0 +1,161 @@
+{
+  "version": "2.0.0",
+  "project": {
+    "name": "prompt-stack",
+    "type": "fullstack",
+    "language": "mixed"
+  },
+  "frameworks": {
+    "auto_detect": true,
+    "frontend": "react",
+    "backend": "fastapi",
+    "testing": "pytest"
+  },
+  "paths": {
+    "frontend": "./src",
+    "backend": "./backend",
+    "components": "./src/components",
+    "services": "./src/services",
+    "tests": {
+      "frontend": "./src/__tests__",
+      "backend": "./backend/tests"
+    },
+    "exclude": [
+      "node_modules",
+      ".git",
+      "__pycache__",
+      "dist",
+      "build",
+      "coverage",
+      ".next",
+      "grammar-ops"
+    ]
+  },
+  "rules": {
+    "python": {
+      "functions": {
+        "require_verb_prefix": {
+          "enabled": true,
+          "exceptions": {
+            "cli_commands": "rails_style",
+            "test_functions": "test_prefix_only",
+            "response_factories": "noun_response_pattern",
+            "event_handlers": "both",
+            "fixtures": true
+          }
+        },
+        "async_prefix": false
+      },
+      "constants": {
+        "style": "UPPER_CASE",
+        "detect_singletons": true,
+        "allow_typevar": true,
+        "allow_lowercase_config": true
+      },
+      "classes": {
+        "style": "PascalCase",
+        "allow_single_letter": false,
+        "special_names": ["Meta", "Config", "DoesNotExist"]
+      },
+      "modules": {
+        "style": "snake_case"
+      }
+    },
+    "typescript": {
+      "interfaces": {
+        "style": "PascalCase",
+        "prefix": "none"
+      },
+      "types": {
+        "style": "PascalCase"
+      },
+      "enums": {
+        "style": "PascalCase"
+      }
+    },
+    "css": {
+      "methodology": "BEM",
+      "case_style": "kebab-case"
+    }
+  },
+  "exceptions": {
+    "functions": [
+      "main",
+      "setup",
+      "teardown"
+    ],
+    "constants": [
+      "app",
+      "router",
+      "logger",
+      "db",
+      "redis",
+      "limiter"
+    ],
+    "patterns": {
+      "allow": [
+        "^T = TypeVar\\(",
+        "^[A-Z] = TypeVar\\(",
+        "^logger = logging\\.getLogger"
+      ],
+      "ignore": [
+        "migrations/",
+        "generated/"
+      ]
+    }
+  },
+  "enforcement": {
+    "level": "warning",
+    "new_files_only": false,
+    "gradual_adoption": {
+      "enabled": true,
+      "start_date": "2025-02-01",
+      "phases": [
+        {
+          "name": "Documentation",
+          "rules": ["metadata"],
+          "date": "2025-02-01"
+        },
+        {
+          "name": "New Code",
+          "rules": ["functions", "constants"],
+          "date": "2025-03-01"
+        },
+        {
+          "name": "Full Enforcement",
+          "rules": ["all"],
+          "date": "2025-04-01"
+        }
+      ]
+    }
+  },
+  "reporting": {
+    "format": "markdown",
+    "verbose": false,
+    "show_context": true,
+    "max_issues": 50,
+    "group_by": "type"
+  },
+  "auto_fix": {
+    "enabled": false,
+    "interactive": true,
+    "safe_only": true,
+    "backup": true
+  },
+  "metadata": {
+    "add_to_new_files": true,
+    "template": "standard",
+    "required_fields": ["purpose", "layer", "dependencies"]
+  },
+  "integrations": {
+    "pre_commit": true,
+    "ci_cd": {
+      "enabled": true,
+      "provider": "github"
+    },
+    "ide": {
+      "vscode": true,
+      "pycharm": false
+    }
+  }
+}

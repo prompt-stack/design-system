@@ -1,0 +1,47 @@
+{
+  "project": {
+    "name": "my-api",
+    "type": "backend",
+    "language": "python"
+  },
+  "frameworks": {
+    "backend": "fastapi",
+    "testing": "pytest"
+  },
+  "rules": {
+    "python": {
+      "functions": {
+        "require_verb_prefix": {
+          "enabled": true,
+          "exceptions": {
+            "cli_commands": "rails_style",
+            "test_functions": "test_prefix_only",
+            "response_factories": "noun_response_pattern",
+            "fixtures": true
+          }
+        }
+      },
+      "constants": {
+        "style": "UPPER_CASE",
+        "detect_singletons": true,
+        "allow_typevar": true
+      }
+    }
+  },
+  "exceptions": {
+    "constants": [
+      "app",
+      "router",
+      "logger",
+      "limiter"
+    ],
+    "patterns": {
+      "allow": [
+        "^app = FastAPI\\(",
+        "^router = APIRouter\\(",
+        "^logger = logging\\.getLogger",
+        "^T = TypeVar\\("
+      ]
+    }
+  }
+}

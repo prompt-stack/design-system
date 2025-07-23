@@ -1,0 +1,21 @@
+{
+  "project": {
+    "type": "library",
+    "language": "python"
+  },
+  "frameworks": {
+    "auto_detect": true
+  },
+  "rules": {
+    "python": {
+      "functions": {
+        "require_verb_prefix": {
+          "enabled": true
+        }
+      },
+      "constants": {
+        "style": "UPPER_CASE"
+      }
+    }
+  }
+}

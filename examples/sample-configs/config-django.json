@@ -1,0 +1,47 @@
+{
+  "project": {
+    "name": "django-app",
+    "type": "backend",
+    "language": "python"
+  },
+  "frameworks": {
+    "backend": "django",
+    "testing": "pytest"
+  },
+  "rules": {
+    "python": {
+      "functions": {
+        "require_verb_prefix": {
+          "enabled": true,
+          "exceptions": {
+            "test_functions": "test_prefix_only",
+            "fixtures": true
+          }
+        }
+      },
+      "classes": {
+        "style": "PascalCase",
+        "special_names": ["Meta", "DoesNotExist", "MultipleObjectsReturned"]
+      },
+      "constants": {
+        "style": "UPPER_CASE"
+      }
+    }
+  },
+  "exceptions": {
+    "patterns": {
+      "allow": [
+        "urlpatterns",
+        "__tablename__"
+      ]
+    }
+  },
+  "paths": {
+    "exclude": [
+      "migrations",
+      "static",
+      "media",
+      "templates"
+    ]
+  }
+}

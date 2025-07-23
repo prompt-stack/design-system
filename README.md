@@ -1,206 +1,270 @@
-# Content Stack Design System
+# Grammar-Ops: Context-Aware Code Convention Enforcement
 
-> A comprehensive, LLM-optimized component architecture that enforces consistency while maintaining design flexibility.
-
-## 🎯 Overview
-
-This design system provides a scalable approach to component-driven development with:
-- **Clear dependency hierarchy**: Primitives → Composed → Features → Pages
-- **Zero orphan styles**: Every component has its style companion
-- **LLM-friendly patterns**: Constrained choices prevent AI hallucination
-- **Utility-first flexibility**: Box primitive bridges utilities and custom CSS
-
-## 📁 What's Included
-
-```
-design-system/
-├── docs/
-│   ├── COMPONENT-STYLE-CONTRACT.md    # Core rules and patterns
-│   ├── COMPONENT-ARCHITECTURE.md      # Detailed architecture guide
-│   ├── DESIGN-PRIMITIVES.md           # True primitive definitions
-│   └── STYLE-GUIDE.md                 # CSS conventions
-├── scripts/
-│   ├── validate-component-styles.js   # Orphan prevention
-│   ├── generate-component.js          # Component scaffolding
-│   └── update-registry.js             # Registry maintenance
-├── examples/
-│   ├── primitive-button/              # Example primitive
-│   ├── composed-card/                 # Example composed
-│   └── feature-data-table/            # Example feature
-└── templates/
-    ├── primitive.template.tsx         # Primitive boilerplate
-    ├── composed.template.tsx          # Composed boilerplate
-    └── feature.template.tsx           # Feature boilerplate
-```
+A smart, framework-aware tool for enforcing naming conventions in Python and TypeScript/JavaScript codebases. Unlike traditional linters, Grammar-Ops understands your code's context and respects framework idioms.
 
 ## 🚀 Quick Start
 
-### 1. Install Dependencies
 ```bash
-npm install --save-dev glob
+# Install grammar-ops
+cd grammar-ops
+export PATH="$PWD/bin:$PATH"
+
+# Analyze your project
+grammar-ops analyze /path/to/project
+
+# Learn from existing code
+grammar-ops learn /path/to/project -o my-conventions.json
+
+# Migrate code interactively
+grammar-ops migrate /path/to/project --dry-run
 ```
 
-### 2. Run Validation
+## 📁 Project Structure
+
+```
+grammar-ops/
+├── bin/                    # Executable scripts
+│   └── grammar-ops        # Main CLI entry point
+│
+├── lib/                   # Core library modules
+│   ├── core/             # Core functionality
+│   │   └── framework_detector.py
+│   ├── analyzers/        # Code analyzers
+│   │   ├── context_analyzer.py
+│   │   └── constant_detector.py
+│   └── reporters/        # Output formatters
+│       └── enhanced_reporter.py
+│
+├── tools/                 # Standalone tools
+│   ├── learn.py          # Learn patterns from code
+│   └── migrate.py        # Migrate code to conventions
+│
+├── scripts/              # Original audit scripts
+│   ├── audit-*.sh        # Shell-based auditors
+│   └── *.js/*.py         # Language-specific scripts
+│
+├── config/               # Configuration files
+│   ├── schema-v2.json    # Enhanced config schema
+│   └── *.json            # Other schemas
+│
+├── examples/             # Example configurations
+│   ├── sample-configs/   # Config examples
+│   └── sample-projects/  # Demo projects
+│
+├── docs/                 # Documentation
+│   ├── ENHANCED_FEATURES.md
+│   └── *.md              # Other docs
+│
+└── templates/            # Code templates
+```
+
+## 🎯 Key Features
+
+### 1. Framework Detection
+Automatically detects and respects framework conventions:
+- **Python**: FastAPI, Django, Flask, Typer, Click, Pytest
+- **JavaScript**: React, Vue, Angular, Next.js (coming soon)
+
+### 2. Context-Aware Analysis
+Understands function context before applying rules:
+- CLI commands can use Rails-style naming (`start`, `stop`)
+- Test functions already have `test_` prefix
+- Response factories follow constructor patterns
+- Fixtures are nouns, not actions
+
+### 3. Smart Constant Detection
+Distinguishes between:
+- True constants (`MAX_RETRIES = 3`)
+- Singleton instances (`app = FastAPI()`)
+- TypeVar declarations (`T = TypeVar('T')`)
+- Logger instances (`logger = logging.getLogger()`)
+
+### 4. Learning Mode
+Learn from your existing codebase:
 ```bash
-node design-system/scripts/validate-component-styles.js
+grammar-ops learn . -o learned.json
 ```
 
-### 3. Create New Component
+### 5. Interactive Migration
+Safely migrate with preview and rollback:
 ```bash
-node design-system/scripts/generate-component.js Button primitive
+grammar-ops migrate . --dry-run  # Preview
+grammar-ops migrate .            # Apply
+grammar-ops migrate . --rollback # Undo
 ```
 
-## 🏗️ Architecture
+## 📋 Commands
 
-### Component Layers
+### `analyze` - Check for violations
+```bash
+grammar-ops analyze [path] [options]
 
-```mermaid
-graph TD
-    A[Primitives] --> B[Composed]
-    B --> C[Features]
-    C --> D[Pages]
-    
-    A1[Button, Input, Text] --> A
-    B1[Card, Modal, Dropdown] --> B
-    C1[DataTable, SearchBar] --> C
-    D1[Dashboard, Settings] --> D
+Options:
+  -p, --pattern     File pattern (default: **/*.py)
+  -v, --verbose     Show detailed issues
+  -m, --max-issues  Maximum issues to show
+  --no-color        Disable colored output
 ```
 
-### The Box Bridge Pattern
+### `learn` - Learn from existing code
+```bash
+grammar-ops learn [path] [options]
 
-```typescript
-// ✅ GOOD: Utilities via props, custom CSS via className
-<Box 
-  className="card card--glass"  // Custom styling
-  padding="md"                  // Utility
-  shadow="lg"                   // Utility
->
-  {children}
-</Box>
-
-// ❌ BAD: Mixed utility classes
-<div className="card p-md shadow-lg card--glass">
+Options:
+  -o, --output      Output config file
+  -r, --report      Show detailed report
 ```
 
-## 📝 Component Metadata
+### `migrate` - Fix violations interactively
+```bash
+grammar-ops migrate [path] [options]
 
-Every component must include comprehensive metadata:
-
-```typescript
-/**
- * @layer primitive
- * @cssFile /styles/components/button.css
- * @utilities spacing, typography
- * @variants ["primary", "secondary", "danger"]
- * @sizes ["xs", "sm", "md", "lg", "xl"]
- * @status stable
- * @since 2025-07-19
- * @a11y aria-label required for icon-only
- * @performance Debounce for heavy operations
- */
+Options:
+  -c, --config      Config file to use
+  -p, --pattern     File pattern
+  -d, --dry-run     Preview changes
+  --rollback        Undo previous migration
 ```
 
-## 🛡️ Validation & Enforcement
+### `detect` - Detect frameworks
+```bash
+grammar-ops detect [path]
+```
 
-### Pre-commit Hook
+## 📝 Configuration
+
+### Basic Configuration
+Create `.grammarops.config.json` in your project:
+
 ```json
 {
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run validate:styles"
+  "project": {
+    "type": "fullstack",
+    "language": "python"
+  },
+  "frameworks": {
+    "auto_detect": true
+  },
+  "rules": {
+    "python": {
+      "functions": {
+        "require_verb_prefix": {
+          "enabled": true,
+          "exceptions": {
+            "cli_commands": "rails_style"
+          }
+        }
+      }
     }
   }
 }
 ```
 
-### CI/CD Integration
-```yaml
-- name: Validate Design System
-  run: |
-    npm run validate:styles
-    npm run validate:dependencies
+### Learning from Your Code
+Let Grammar-Ops learn your patterns:
+
+```bash
+# Learn patterns
+grammar-ops learn . -o .grammarops.config.json
+
+# Review and adjust
+cat .grammarops.config.json
+
+# Use it
+grammar-ops analyze .
 ```
 
-## 🤖 LLM Integration
+## 🔧 Original Scripts
 
-This system is optimized for AI-assisted development:
+The `scripts/` directory contains the original grammar-ops scripts:
 
-1. **Constrained Props**: LLMs can't invent invalid options
-2. **Clear Patterns**: Consistent metadata structure
-3. **Type Safety**: Props enforce valid choices
-4. **Registry Lookup**: Components can query relationships
+- **Metadata Management**: `add-*.sh` scripts
+- **Auditing**: `audit-*.sh` scripts
+- **Component Generation**: `generate-component.js`
+- **Validation**: `validate-*.js` scripts
 
-### Example LLM Prompt
-```
-Create a new Card component that:
-- Is a composed component
-- Uses Box primitive for spacing
-- Has "elevated" and "flat" variants
-- Includes proper metadata
+These scripts work independently and can be used directly:
+```bash
+./scripts/audit-python-naming.sh
+./scripts/add-python-metadata.sh
 ```
 
-## 📊 Component Registry
+## 🎨 Examples
 
-Auto-generated registry tracks all relationships:
-
-```json
-{
-  "Button": {
-    "layer": "primitive",
-    "css": "button.css",
-    "utilities": ["spacing"],
-    "variants": ["primary", "secondary"],
-    "usedBy": ["Card", "Modal", "Form"]
-  }
-}
+### CLI Command (Rails-style OK)
+```python
+@cli.command()
+def start():  # ✓ Grammar-Ops understands this
+    """Start the service"""
 ```
 
-## 🔧 Customization
-
-### Adding New Utility Props to Box
-```typescript
-// 1. Add to BoxProps interface
-interface BoxProps {
-  // existing...
-  textAlign?: 'left' | 'center' | 'right';
-}
-
-// 2. Map to utility class
-className={clsx(
-  // existing...
-  textAlign && `text-${textAlign}`
-)}
+### Test Function (Already has prefix)
+```python
+def test_user_can_login():  # ✓ No "verb prefix" warning
+    assert user.login()
 ```
 
-### Creating New Variants
-```css
-/* In component CSS file */
-.card--neon {
-  border: 2px solid var(--color-plasma);
-  box-shadow: 0 0 20px var(--color-plasma);
-}
+### Singleton Instance (Lowercase OK)
+```python
+app = FastAPI()  # ✓ Not flagged as "should be UPPER_CASE"
+router = APIRouter()  # ✓ Framework pattern recognized
 ```
 
-## 📚 Best Practices
-
-1. **Always use Box for utilities** - Never mix utility classes in className
-2. **Document everything** - Complete metadata prevents confusion
-3. **Run validation often** - Catch issues before commit
-4. **Keep CSS focused** - Utilities for common, custom for unique
-5. **Think in layers** - Respect the dependency hierarchy
+### TypeVar (Special naming)
+```python
+T = TypeVar('T')  # ✓ Typing convention understood
+UserT = TypeVar('UserT', bound=User)  # ✓ Also OK
+```
 
 ## 🤝 Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on:
-- Adding new components
-- Updating existing patterns
-- Proposing architectural changes
-- Documentation standards
+1. Framework patterns not recognized? Add to `lib/core/framework_detector.py`
+2. New context needed? Update `lib/analyzers/context_analyzer.py`
+3. Better error messages? Enhance `lib/reporters/enhanced_reporter.py`
 
-## 📄 License
+## 📚 Learn More
 
-This design system is part of the Content Stack project and follows the same license terms.
+- [Enhanced Features Documentation](docs/ENHANCED_FEATURES.md)
+- [Full Grammar System](docs/FULL_STACK_GRAMMAR_SYSTEM.md)
+- [Naming Conventions](docs/NAMING-CONVENTIONS.md)
 
----
+## 🔄 Migration Path
 
-Built with ❤️ for humans and AI alike.
+1. **Analyze Current State**
+   ```bash
+   grammar-ops analyze . --verbose
+   ```
+
+2. **Learn Your Patterns**
+   ```bash
+   grammar-ops learn . -o my-patterns.json
+   ```
+
+3. **Configure Exceptions**
+   ```bash
+   cp my-patterns.json .grammarops.config.json
+   # Edit to adjust rules
+   ```
+
+4. **Gradual Migration**
+   ```bash
+   # Start with new files only
+   # Then expand to existing code
+   grammar-ops migrate . --dry-run
+   ```
+
+5. **Integrate with CI/CD**
+   ```yaml
+   - name: Check Grammar
+     run: grammar-ops analyze .
+   ```
+
+## 🎯 Philosophy
+
+Grammar-Ops believes that:
+- **Context matters**: A CLI command doesn't need `execute_` prefix
+- **Frameworks have idioms**: `app = FastAPI()` is correct, not `APP`
+- **Gradual adoption works**: Don't break working code
+- **Developers know best**: Learn from existing patterns
+
+Start using Grammar-Ops today for smarter, context-aware code conventions!
