@@ -1,32 +1,230 @@
 {
+  "version": "2.0",
+  "description": "Grammar Ops configuration for content-stack-react",
+  
   "paths": {
     "src": "../src",
     "components": "../src/components",
     "hooks": "../src/hooks",
     "services": "../src/services",
+    "utils": "../src/utils",
     "styles": "../src/styles",
+    "pages": "../src/pages",
+    "features": "../src/features",
+    "types": "../src/types",
     "tests": "../src/__tests__",
-    "cypress": "../cypress"
+    "cypress": "../cypress",
+    "scripts": "./scripts",
+    "templates": "./templates",
+    "knowledge": "./knowledge-library"
   },
-  "testing": {
-    "unit": {
-      "runner": "jest",
-      "coverage": {
-        "statements": 80,
-        "branches": 70,
-        "functions": 70,
-        "lines": 80
-      }
+  
+  "grammar": {
+    "verbTaxonomy": {
+      "data": ["fetch", "get", "list", "create", "update", "delete", "save", "load", "sync", "query"],
+      "view": ["render", "display", "show", "hide", "toggle", "open", "close", "reveal", "collapse"],
+      "state": ["use", "set", "clear", "reset", "initialize", "restore", "manage", "track"],
+      "transform": ["format", "parse", "convert", "serialize", "deserialize", "normalize", "stringify"],
+      "validation": ["validate", "verify", "check", "ensure", "assert", "confirm"],
+      "events": ["handle", "on", "emit", "dispatch", "listen", "trigger"],
+      "async": ["queue", "process", "retry", "poll", "stream", "defer"],
+      "custom": []
     },
-    "e2e": {
-      "runner": "cypress",
-      "baseUrl": "http://localhost:5173"
+    "allowedPrefixes": {
+      "boolean": ["is", "has", "can", "should", "will", "does", "did"],
+      "hook": ["use"],
+      "hoc": ["with"],
+      "selector": ["select", "get"],
+      "factory": ["create", "make", "build"]
     }
   },
+  
+  "layers": {
+    "primitive": {
+      "path": "components/primitives",
+      "canImport": [],
+      "metadata": {
+        "layer": "primitive",
+        "dependencies": "None"
+      }
+    },
+    "composed": {
+      "path": "components/composed",
+      "canImport": ["primitive"],
+      "metadata": {
+        "layer": "composed"
+      }
+    },
+    "feature": {
+      "path": "features",
+      "canImport": ["primitive", "composed", "hooks", "services", "utils"],
+      "metadata": {
+        "layer": "feature"
+      }
+    }
+  },
+  
+  "metadata": {
+    "required": ["@file", "@purpose", "@layer"],
+    "recommended": ["@dependencies", "@llm-read", "@llm-write", "@llm-role"],
+    "optional": ["@status", "@performance", "@security", "@a11y"],
+    "defaults": {
+      "llm-read": true,
+      "llm-write": "full-edit",
+      "llm-role": "utility",
+      "status": "stable"
+    }
+  },
+  
+  "llmDirectives": {
+    "readPermissions": {
+      "default": true,
+      "exclude": ["*.generated.*", "*.min.js", "build/", "dist/", "node_modules/"]
+    },
+    "writePermissions": {
+      "full-edit": ["components/", "hooks/", "utils/", "features/"],
+      "suggest-only": ["pages/", "App.tsx", "*.config.*", "package.json"],
+      "read-only": ["api/", "services/", "auth/", "*.generated.*", "migrations/"]
+    },
+    "roles": {
+      "utility": ["components/", "hooks/", "utils/"],
+      "entrypoint": ["pages/", "App.tsx", "main.tsx"],
+      "pure-view": ["*Display.tsx", "*View.tsx", "*List.tsx"],
+      "async-service": ["services/", "api/", "*Service.ts", "*Api.ts"]
+    }
+  },
+  
   "validation": {
     "strictMode": true,
     "enforceNaming": true,
     "requireTests": true,
-    "requireDocs": false
+    "requireDocs": false,
+    "requireMetadata": true,
+    "componentStylePairing": true,
+    "excludePatterns": [
+      "node_modules/**",
+      "build/**",
+      "dist/**",
+      "coverage/**",
+      "*.generated.*",
+      "*.min.js"
+    ]
+  },
+  
+  "testing": {
+    "unit": {
+      "runner": "jest",
+      "testMatch": ["**/*.test.{ts,tsx,js,jsx}"],
+      "coverageThresholds": {
+        "global": {
+          "statements": 80,
+          "branches": 70,
+          "functions": 70,
+          "lines": 80
+        },
+        "components": {
+          "statements": 80,
+          "branches": 75,
+          "functions": 75,
+          "lines": 80
+        },
+        "hooks": {
+          "statements": 90,
+          "branches": 85,
+          "functions": 85,
+          "lines": 90
+        },
+        "utils": {
+          "statements": 95,
+          "branches": 90,
+          "functions": 90,
+          "lines": 95
+        }
+      }
+    },
+    "e2e": {
+      "runner": "cypress",
+      "baseUrl": "http://localhost:5173",
+      "testMatch": ["**/*.cy.{ts,js}"],
+      "pageObjectPath": "cypress/pages"
+    },
+    "patterns": {
+      "testNaming": "should {verb} {condition}",
+      "describeNaming": "{ComponentName}",
+      "testStructure": ["rendering", "props", "interactions", "state", "edge cases"]
+    }
+  },
+  
+  "generation": {
+    "components": {
+      "defaultLayer": "primitive",
+      "includeTests": true,
+      "includeStyles": true,
+      "includeStories": false,
+      "typescript": true,
+      "templatePath": "templates/component"
+    },
+    "tests": {
+      "templatePath": "templates/tests",
+      "includeSnapshots": false,
+      "includeCoverage": true
+    }
+  },
+  
+  "audit": {
+    "schedule": "pre-commit",
+    "parallel": true,
+    "reports": {
+      "format": "json",
+      "outputPath": "audit/reports",
+      "includeTimestamp": true
+    },
+    "thresholds": {
+      "naming": 95,
+      "architecture": 90,
+      "documentation": 80,
+      "overall": 90
+    }
+  },
+  
+  "scripts": {
+    "paths": {
+      "metadata": "scripts/metadata",
+      "audit": "scripts/audit",
+      "validation": "scripts/validation",
+      "generation": "scripts/generation",
+      "utilities": "scripts/utilities"
+    },
+    "aliases": {
+      "add-metadata": "scripts/metadata/add/add-universal-metadata.sh",
+      "audit-all": "scripts/audit/compliance/audit-all.sh",
+      "generate": "scripts/generation/generate-component.js",
+      "validate": "scripts/validation/validate-component-styles.cjs"
+    }
+  },
+  
+  "migration": {
+    "learn": {
+      "enabled": true,
+      "preserveExceptions": true,
+      "customPatterns": []
+    },
+    "strategy": "gradual",
+    "backup": true,
+    "validation": true
+  },
+  
+  "ide": {
+    "vscode": {
+      "extensions": [
+        "grammar-ops.vscode-extension"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "files.associations": {
+          "*.grammarops": "json"
+        }
+      }
+    }
   }
 }
