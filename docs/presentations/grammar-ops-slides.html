@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Grammar Ops - Universal Development Grammar</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+    <style>
+        .slide {
+            width: 100%;
+            max-width: 1280px;
+            height: 720px;
+            display: none;
+            position: relative;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .slide.active {
+            display: block;
+        }
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .controls {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .slide-counter {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+        }
+        @media (max-width: 768px) {
+            .slide {
+                height: auto;
+                aspect-ratio: 16/9;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="w-full max-w-7xl mx-auto">
+        <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">Grammar Ops: Universal Development Grammar</h1>
+        
+        <div class="relative bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="slide-counter">
+                <span id="current-slide">1</span> / <span id="total-slides">17</span>
+            </div>
+            
+            <!-- Slides -->
+            <div class="slide active" data-slide="1">
+                <img src="../../slide-deck/slide-01.png" alt="Slide 1 - Title: Universal Development Grammar">
+            </div>
+            <div class="slide" data-slide="2">
+                <img src="../../slide-deck/slide-02.png" alt="Slide 2">
+            </div>
+            <div class="slide" data-slide="3">
+                <img src="../../slide-deck/slide-03.png" alt="Slide 3">
+            </div>
+            <div class="slide" data-slide="4">
+                <img src="../../slide-deck/slide-04.png" alt="Slide 4">
+            </div>
+            <div class="slide" data-slide="5">
+                <img src="../../slide-deck/slide-05.png" alt="Slide 5">
+            </div>
+            <div class="slide" data-slide="6">
+                <img src="../../slide-deck/slide-06.png" alt="Slide 6">
+            </div>
+            <div class="slide" data-slide="7">
+                <img src="../../slide-deck/slide-07.png" alt="Slide 7">
+            </div>
+            <div class="slide" data-slide="8">
+                <img src="../../slide-deck/slide-08.png" alt="Slide 8">
+            </div>
+            <div class="slide" data-slide="9">
+                <img src="../../slide-deck/slide-09.png" alt="Slide 9">
+            </div>
+            <div class="slide" data-slide="10">
+                <img src="../../slide-deck/slide-10.png" alt="Slide 10">
+            </div>
+            <div class="slide" data-slide="11">
+                <img src="../../slide-deck/slide-11.png" alt="Slide 11">
+            </div>
+            <div class="slide" data-slide="12">
+                <img src="../../slide-deck/slide-12.png" alt="Slide 12">
+            </div>
+            <div class="slide" data-slide="13">
+                <img src="../../slide-deck/slide-13.png" alt="Slide 13">
+            </div>
+            <div class="slide" data-slide="14">
+                <img src="../../slide-deck/slide-14.png" alt="Slide 14">
+            </div>
+            <div class="slide" data-slide="15">
+                <img src="../../slide-deck/slide-15.png" alt="Slide 15">
+            </div>
+            <div class="slide" data-slide="16">
+                <img src="../../slide-deck/slide-16.png" alt="Slide 16">
+            </div>
+            <div class="slide" data-slide="17">
+                <img src="../../slide-deck/slide-17.png" alt="Slide 17">
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button id="prev-btn" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                ← Previous
+            </button>
+            <button id="next-btn" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                Next →
+            </button>
+        </div>
+        
+        <div class="mt-8 text-center text-gray-600">
+            <p>Use arrow keys or buttons to navigate</p>
+            <p class="mt-2">
+                <a href="https://github.com/prompt-stack/grammar-ops" class="text-blue-600 hover:underline">
+                    View Grammar Ops on GitHub
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 17;
+        
+        const showSlide = (n) => {
+            const slides = document.querySelectorAll('.slide');
+            
+            if (n > totalSlides) currentSlide = 1;
+            if (n < 1) currentSlide = totalSlides;
+            
+            slides.forEach(slide => slide.classList.remove('active'));
+            document.querySelector(`[data-slide="${currentSlide}"]`).classList.add('active');
+            
+            document.getElementById('current-slide').textContent = currentSlide;
+            
+            // Update button states
+            document.getElementById('prev-btn').disabled = currentSlide === 1;
+            document.getElementById('next-btn').disabled = currentSlide === totalSlides;
+        };
+        
+        const nextSlide = () => {
+            currentSlide++;
+            showSlide(currentSlide);
+        };
+        
+        const prevSlide = () => {
+            currentSlide--;
+            showSlide(currentSlide);
+        };
+        
+        // Button clicks
+        document.getElementById('next-btn').addEventListener('click', nextSlide);
+        document.getElementById('prev-btn').addEventListener('click', prevSlide);
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+        
+        // Initialize
+        showSlide(1);
+    </script>
+</body>
+</html>

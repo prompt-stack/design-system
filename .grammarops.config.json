@@ -28,6 +28,14 @@
       "validation": ["validate", "verify", "check", "ensure", "assert", "confirm"],
       "events": ["handle", "on", "emit", "dispatch", "listen", "trigger"],
       "async": ["queue", "process", "retry", "poll", "stream", "defer"],
+      "security": {
+        "authentication": ["authenticate", "login", "logout", "verify", "challenge"],
+        "authorization": ["authorize", "permit", "deny", "grant", "revoke"],
+        "validation": ["validate", "verify", "check", "ensure", "assert"],
+        "sanitization": ["sanitize", "escape", "clean", "filter", "purify"],
+        "encryption": ["encrypt", "decrypt", "hash", "sign", "mask"],
+        "monitoring": ["audit", "log", "track", "monitor", "alert"]
+      },
       "custom": []
     },
     "allowedPrefixes": {
@@ -66,14 +74,16 @@
   
   "metadata": {
     "required": ["@file", "@purpose", "@layer"],
-    "recommended": ["@dependencies", "@llm-read", "@llm-write", "@llm-role"],
-    "optional": ["@status", "@performance", "@security", "@a11y"],
+    "recommended": ["@dependencies", "@llm-read", "@llm-write", "@llm-role", "@security-level"],
+    "optional": ["@status", "@performance", "@security", "@a11y", "@security-features", "@security-audit", "@threat-model"],
     "defaults": {
       "llm-read": true,
       "llm-write": "full-edit",
       "llm-role": "utility",
-      "status": "stable"
-    }
+      "status": "stable",
+      "security-level": "public"
+    },
+    "securityLevels": ["public", "internal", "sensitive", "critical", "restricted"]
   },
   
   "llmDirectives": {
@@ -226,5 +236,33 @@
         }
       }
     }
+  },
+  
+  "security": {
+    "enableSecurityGrammar": true,
+    "requiredPatterns": {
+      "userInput": "validate.*Input",
+      "htmlOutput": "sanitize.*Html",
+      "apiEndpoint": "authorize.*Endpoint",
+      "sensitiveData": "encrypt.*Data",
+      "errorHandling": "sanitize.*Error"
+    },
+    "forbiddenPatterns": [
+      "eval\\(",
+      "innerHTML\\s*=",
+      "dangerouslySetInnerHTML(?!.*sanitize)",
+      "password\\s*=\\s*[\"']",
+      "api[kK]ey\\s*=\\s*[\"']"
+    ],
+    "vulnerabilityScanning": {
+      "sqlInjection": true,
+      "xss": true,
+      "csrf": true,
+      "xxe": true,
+      "idor": true,
+      "secretsExposure": true
+    },
+    "complianceStandards": ["OWASP", "PCI-DSS", "GDPR"],
+    "auditFrequency": "pre-commit"
   }
 }
